@@ -1,0 +1,6 @@
+br\com\uab\sart\services\StatusAgendamentoSchedulerTest.class
+br\com\uab\sart\config\AdminSeedConfigTest.class
+br\com\uab\sart\repositories\ReservaRepositoryTest.class
+br\com\uab\sart\controllers\AuthControllerTest.class
+br\com\uab\sart\controllers\DashboardControllerTest.class
+br\com\uab\sart\SartApplicationTests.class

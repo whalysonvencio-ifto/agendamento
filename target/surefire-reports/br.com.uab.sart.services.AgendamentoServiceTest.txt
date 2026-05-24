@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------
+Test set: br.com.uab.sart.services.AgendamentoServiceTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.219 s <<< FAILURE! -- in br.com.uab.sart.services.AgendamentoServiceTest
+br.com.uab.sart.services.AgendamentoServiceTest.testeConflitoEquipamento -- Time elapsed: 0.193 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting actual throwable to be an instance of:
+  br.com.uab.sart.exceptions.EquipamentoIndisponivelException
+but was:
+  java.lang.IllegalArgumentException: Professor não encontrado
+	at br.com.uab.sart.services.AgendamentoService.lambda$criarReserva$0(AgendamentoService.java:82)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at br.com.uab.sart.services.AgendamentoService.criarReserva(AgendamentoService.java:82)
+	...(75 remaining lines not displayed - this can be changed with Assertions.setMaxStackTraceElementsDisplayed)
+	at br.com.uab.sart.services.AgendamentoServiceTest.testeConflitoEquipamento(AgendamentoServiceTest.java:75)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+br.com.uab.sart.services.AgendamentoServiceTest.testeEquipamentoEmManutencao -- Time elapsed: 0.003 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting actual throwable to be an instance of:
+  br.com.uab.sart.exceptions.EquipamentoIndisponivelException
+but was:
+  java.lang.IllegalArgumentException: Professor não encontrado
+	at br.com.uab.sart.services.AgendamentoService.lambda$criarReserva$0(AgendamentoService.java:82)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at br.com.uab.sart.services.AgendamentoService.criarReserva(AgendamentoService.java:82)
+	...(75 remaining lines not displayed - this can be changed with Assertions.setMaxStackTraceElementsDisplayed)
+	at br.com.uab.sart.services.AgendamentoServiceTest.testeEquipamentoEmManutencao(AgendamentoServiceTest.java:92)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+br.com.uab.sart.services.AgendamentoServiceTest.testeRegra5MinutosCritico -- Time elapsed: 0.003 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting actual throwable to be an instance of:
+  br.com.uab.sart.exceptions.TempoAntecedenciaInvalidoException
+but was:
+  java.lang.IllegalArgumentException: Professor não encontrado
+	at br.com.uab.sart.services.AgendamentoService.lambda$criarReserva$0(AgendamentoService.java:82)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at br.com.uab.sart.services.AgendamentoService.criarReserva(AgendamentoService.java:82)
+	...(75 remaining lines not displayed - this can be changed with Assertions.setMaxStackTraceElementsDisplayed)
+	at br.com.uab.sart.services.AgendamentoServiceTest.testeRegra5MinutosCritico(AgendamentoServiceTest.java:54)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Administrador - SART</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img th:src="@{/images/logo.png}" alt="Logo SART" height="30" class="d-inline-block align-text-top me-2">
+                SART
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="/">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/professores">Professores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/turmas">Turmas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/equipamentos">Equipamentos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/relatorios">Relatórios</a></li>
+                </ul>
+            </div>
+            <div class="d-flex">
+                <span class="navbar-text me-3" th:text="'Bem-vindo, ' + ${usuarioLogado}"></span>
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn btn-outline-light btn-sm" type="submit">Sair</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="mb-4 shadow-sm rounded">
+            <img th:src="@{/images/banner.png}" alt="Banner SART" class="img-fluid rounded w-100" style="max-height: 250px; object-fit: cover;">
+        </div>
+        <h2 class="mb-4">Painel de Controle - Entregas de Hoje</h2>
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Equipamento</th>
+                    <th>Professor</th>
+                    <th>Turma</th>
+                    <th>Horário</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="reserva : ${fila}">
+                    <td th:text="${reserva.equipamento.nome}"></td>
+                    <td th:text="${reserva.professor.nome}"></td>
+                    <td th:text="${reserva.turma.nome}"></td>
+                    <td th:text="${reserva.horarioAula} + 'º Horário'"></td>
+                    <td>
+                        <span class="badge" 
+                              th:classappend="${reserva.status.name() == 'ATIVA' ? 'bg-primary' : 
+                                             (reserva.status.name() == 'EM_USO' ? 'bg-warning text-dark' : 
+                                             (reserva.status.name() == 'CONCLUIDA' ? 'bg-success' : 'bg-danger'))}"
+                              th:text="${reserva.status}">
+                        </span>
+                    </td>
+                    <td>
+                        <form th:if="${reserva.status.name() == 'ATIVA'}" th:action="@{/reserva/{id}/entregar(id=${reserva.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-primary">Confirmar Entrega</button>
+                        </form>
+                        <form th:if="${reserva.status.name() == 'EM_USO' or reserva.status.name() == 'ATRASADA'}" th:action="@{/reserva/{id}/devolver(id=${reserva.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">Confirmar Devolução</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(fila)}">
+                    <td colspan="6" class="text-center">Nenhuma reserva para hoje.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

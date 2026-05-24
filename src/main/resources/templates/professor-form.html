@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Professor - SART</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img th:src="@{/images/logo.png}" alt="Logo SART" height="30" class="d-inline-block align-text-top me-2">
+                SART
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/professores">Professores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/turmas">Turmas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/equipamentos">Equipamentos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/relatorios">Relatórios</a></li>
+                </ul>
+            </div>
+            <div class="d-flex">
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn btn-outline-light btn-sm" type="submit">Sair</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h2>Cadastro de Professor</h2>
+        <form th:action="@{/professores/salvar}" th:object="${professor}" method="post" class="mt-4">
+            <input type="hidden" th:field="*{id}">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome Completo</label>
+                <input type="text" id="nome" class="form-control" th:field="*{nome}" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" id="email" class="form-control" th:field="*{email}" required>
+            </div>
+            <div class="mb-3" th:if="${professor.id == null}">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="password" id="senha" class="form-control" th:field="*{senha}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="/professores" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
