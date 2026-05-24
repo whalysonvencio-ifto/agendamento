@@ -10,6 +10,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.lang.NonNull;
 
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class AdminSeedConfig implements ApplicationListener<ApplicationReadyEven
     }
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
         Optional<Usuario> adminOpt = usuarioRepository.findByEmail(adminEmail);
         
         if (adminOpt.isEmpty()) {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/turmas")
+@SuppressWarnings("null")
 public class TurmaController {
 
     private final TurmaRepository turmaRepository;

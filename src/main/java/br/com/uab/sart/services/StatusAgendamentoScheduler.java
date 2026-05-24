@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@SuppressWarnings("null")
 public class StatusAgendamentoScheduler {
 
     private final ReservaRepository reservaRepository;

@@ -22,6 +22,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class StatusAgendamentoSchedulerTest {
 
     @Mock

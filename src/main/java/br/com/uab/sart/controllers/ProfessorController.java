@@ -12,6 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/professores")
+@SuppressWarnings("null")
 public class ProfessorController {
 
     private final UsuarioRepository usuarioRepository;

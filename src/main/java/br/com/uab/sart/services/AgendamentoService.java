@@ -21,6 +21,7 @@ import java.util.Collections;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@SuppressWarnings("null")
 public class AgendamentoService {
 
     private final ReservaRepository reservaRepository;

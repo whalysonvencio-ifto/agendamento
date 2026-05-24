@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/equipamentos")
+@SuppressWarnings("null")
 public class EquipamentoController {
 
     private final EquipamentoRepository equipamentoRepository;

@@ -24,6 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class AgendamentoServiceTest {
 
     @Mock
@@ -44,8 +45,6 @@ class AgendamentoServiceTest {
 
     @Test
     void testeRegra5MinutosCritico() {
-        // Horario aula 1 começa 08:00
-        // Set clock to 07:56 (hoje)
         LocalDate hoje = LocalDate.now();
         LocalDateTime tempo = LocalDateTime.of(hoje, LocalTime.of(7, 56));
         agendamentoService.setClock(Clock.fixed(tempo.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault()));
@@ -54,9 +53,12 @@ class AgendamentoServiceTest {
         prof.setId(1L);
         Turma turma = new Turma();
         turma.setId(1L);
+        Equipamento eq = new Equipamento();
+        eq.setId(1L);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(prof));
         when(turmaRepository.findById(1L)).thenReturn(Optional.of(turma));
+        when(equipamentoRepository.findById(1L)).thenReturn(Optional.of(eq));
 
         assertThatThrownBy(() -> agendamentoService.criarReserva(1L, List.of(1L), 1L, hoje, List.of(1)))
                 .isInstanceOf(TempoAntecedenciaInvalidoException.class)
@@ -80,9 +82,8 @@ class AgendamentoServiceTest {
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(prof));
         when(turmaRepository.findById(1L)).thenReturn(Optional.of(turma));
-
         when(equipamentoRepository.findById(1L)).thenReturn(Optional.of(eq));
-        
+
         Reserva existente = new Reserva();
         when(reservaRepository.findByEquipamentoAndDataAndHorarioAulaAndAtivoTrueAndStatusNot(eq, hoje, 2, StatusReserva.CANCELADA))
                 .thenReturn(Optional.of(existente));
@@ -102,6 +103,13 @@ class AgendamentoServiceTest {
         eq.setId(1L);
         eq.setStatus(StatusEquipamento.MANUTENCAO);
 
+        Usuario prof = new Usuario();
+        prof.setId(1L);
+        Turma turma = new Turma();
+        turma.setId(1L);
+
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(prof));
+        when(turmaRepository.findById(1L)).thenReturn(Optional.of(turma));
         when(equipamentoRepository.findById(1L)).thenReturn(Optional.of(eq));
 
         assertThatThrownBy(() -> agendamentoService.criarReserva(1L, List.of(1L), 1L, hoje, List.of(1)))
