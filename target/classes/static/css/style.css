@@ -1,0 +1,49 @@
+/* style.css - Estilos globais complementares ao Bootstrap */
+
+/* Garante que o body ocupe pelo menos 100vh para pushar o footer (se houver) para baixo */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa; /* Fundo levemente cinza do Bootstrap */
+}
+
+main {
+    flex: 1;
+}
+
+/* Melhorias no focus visível para Acessibilidade (a11y) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 3px solid #0d6efd !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+}
+
+/* Empty States amigáveis nas tabelas */
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Animação suave para os alertas (Toasts/Alerts) */
+.alert-dismissible {
+    animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

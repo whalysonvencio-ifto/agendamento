@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' - SART'">SART</title>
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome (opcional para ícones) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Estilos globais personalizados -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Navbar Padronizada -->
+<nav th:fragment="navbar(activePage)" class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm" role="navigation" aria-label="Navegação Principal">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <i class="fa-solid fa-calendar-check me-2" aria-hidden="true" style="font-size: 1.5rem; color: #0d6efd;"></i>
+            <span class="fw-bold">SART</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" th:if="${#authorization.expression('isAuthenticated()')}">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${activePage == 'inicio' ? 'active' : ''}" href="/" aria-label="Página Inicial">Início</a>
+                </li>
+                <!-- Links exclusivos de Admin -->
+                <th:block th:if="${#authorization.expression('hasRole(''ROLE_ADMINISTRADOR'')')}">
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${activePage == 'professores' ? 'active' : ''}" href="/professores" aria-label="Gerenciar Professores">Professores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${activePage == 'turmas' ? 'active' : ''}" href="/turmas" aria-label="Gerenciar Turmas">Turmas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${activePage == 'equipamentos' ? 'active' : ''}" href="/equipamentos" aria-label="Gerenciar Equipamentos">Equipamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${activePage == 'relatorios' ? 'active' : ''}" href="/relatorios" aria-label="Acessar Relatórios">Relatórios</a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center" th:if="${#authorization.expression('isAuthenticated()')}">
+            <span class="navbar-text me-3 d-none d-md-block" th:text="'Bem-vindo, ' + ${usuarioLogado}"></span>
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-outline-light btn-sm" type="submit" aria-label="Sair do sistema">
+                    <i class="fa-solid fa-right-from-bracket me-1" aria-hidden="true"></i> Sair
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- JS Global Padrão -->
+<div th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</div>
+
+</body>
+</html>

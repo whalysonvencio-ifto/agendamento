@@ -219,3 +219,39 @@
         incluir select múltiplo para 'equipamentosIds'
         incluir select para 'turmaId'
         incluir botão "Agendar Reserva"
+
+## 8. Diretrizes de Frontend e Design System
+
+O frontend do SART segue um modelo tradicional de Server-Side Rendering (SSR) utilizando **Thymeleaf**, aliado ao **Bootstrap 5** para estilização. Para garantir a manutenibilidade, escalabilidade e qualidade da interface, as seguintes regras são rigorosamente adotadas:
+
+### 8.1. Arquitetura de Componentes e DRY (Don't Repeat Yourself)
+- **Fragmentos Thymeleaf (`th:replace`, `th:fragment`):** Elementos estruturais que se repetem em múltiplas páginas (como a barra de navegação `<nav>`, cabeçalhos estáticos `<head>`, rodapés e modais globais) devem ser obrigatoriamente abstraídos em um arquivo central (ex: `fragments.html`). É terminantemente proibido duplicar trechos grandes de código HTML entre as views.
+- **Isolamento de Estilos e Scripts:** Estilos personalizados que sobrepõem o Bootstrap ou lógicas globais (como formatação de tabelas, validações) devem residir em arquivos separados dentro da pasta `static` (`/css/style.css`, `/js/main.js`).
+
+### 8.2. Padronização Visual e Interações (Design System)
+- **Cores e Consistência:** Utilizar a paleta nativa do Bootstrap de forma consistente:
+  - `primary` para ações afirmativas (Salvar, Confirmar).
+  - `secondary` ou `outline-*` para ações neutras ou de cancelamento (Voltar, Fechar).
+  - `danger` para ações destrutivas (Excluir, Cancelar Reserva).
+  - Sombras suaves (`shadow-sm`) e bordas levemente arredondadas (`rounded`) devem ser usadas em containers e cartões para agregar profundidade à interface.
+- **Tipografia e Espaçamentos:** Fazer uso exclusivo das classes utilitárias de espaçamento do Bootstrap (`m-`, `p-`, `gap-`) para criar respiros na interface. Evitar CSS inline para margens ou paddings.
+
+### 8.3. Responsividade Total
+- **Containers e Grids:** Toda página deve ser envelopada em classes `container` ou `container-fluid`. Elementos dispostos horizontalmente devem usar o sistema de grid (ex: `row`, `col-md-6`) adaptando-se do mobile ao desktop de forma fluida.
+- **Tabelas Responsivas:** Tabelas contendo dados de registros (equipamentos, turmas, fila de reservas) DEVEM obrigatoriamente estar envolvidas por `div.table-responsive` para que o scroll horizontal se aplique apenas à tabela em dispositivos menores, sem quebrar o layout da tela.
+
+### 8.4. Acessibilidade (a11y)
+- **Navegação por Teclado:** Elementos interativos (links, botões, campos de formulário) devem ser totalmente acessíveis via tecla `Tab`. Evitar criar elementos clicáveis em `<div>` ou `<span>` sem usar `tabindex` e interceptadores de eventos de teclado.
+- **Leitores de Tela:**
+  - Uso de propriedades `aria-label` e `aria-labelledby` para ícones, botões que contém apenas ícones ou textos abreviados, e inputs.
+  - A estruturação semântica do documento deve contar com `role="main"` para o container principal da página e tags semânticas para menus (`<nav>`), cabeçalhos (`<header>`) e rodapés (`<footer>`).
+- **Contraste:** Garantir que cores de fundo ou distintivos (`badges`) tenham o contraste adequado em relação ao texto inserido.
+
+### 8.5. Tratamento de Formulários e Loading States (Feedback ao Usuário)
+- **Prevenção de Duplo Envio (Double Submission):** Através de JavaScript global nativo (Vanilla JS), todo formulário disparado deve imediatamente injetar o estado `disabled` em seu botão de envio.
+- **Feedback Visual (Spinners):** Simultaneamente à inativação do botão de envio, o sistema deve apresentar um indicador visual (`spinner-border`) demonstrando ao usuário que a requisição está sendo processada no servidor.
+- **Validação no Cliente (Client-Side Validation):** O uso do HTML5 Validator acoplado à mecânica nativa do Bootstrap (`.was-validated` injetada via JS no submit) é obrigatório antes da requisição POST prosseguir, barrando visualmente dados faltantes (`required`) ou com tipos incorretos.
+
+### 8.6. Cenários de Erro, Alertas e Empty States
+- **Alertas Constantes:** Mensagens provenientes do servidor (ex: `RedirectAttributes` e instâncias do tipo erro de persistência/regras de negócio) devem ser renderizadas através de blocos `alert alert-danger` ou equivalente de forma limpa no topo da área principal.
+- **Empty States:** A ausência de dados a serem listados em uma tabela nunca deve resultar em uma tela vazia estática ou em uma tabela de colapso invisível. Obrigatoriamente, a aplicação deve identificar a lista vazia (`#lists.isEmpty()`) e desenhar uma célula centralizada ocupando toda a largura (`colspan="X"`) com um feedback visual (ícone desbotado, texto neutro encorajando uma ação como "Nenhum equipamento cadastrado").

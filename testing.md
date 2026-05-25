@@ -82,3 +82,31 @@ Este plano define a abordagem de desenvolvimento orientado a testes (TDD) para o
     *   **Configuração (Given):** Requisição feita sob `@WithMockUser(roles = "PROFESSOR")`.
     *   **Ação (When):** Requisição GET para `/dashboard`.
     *   **Verificação (Then):** Resposta HTTP 200, a *view* retornada deve ser `dashboard-prof`, com os dados pessoais do professor no modelo.
+
+---
+
+## 3. Estratégia de Testes de Frontend
+
+Como o sistema renderiza as páginas no lado do servidor (SSR) com Thymeleaf, a estratégia primária de testes de frontend será conduzida na camada web através de testes de integração com a UI e validações de marcação usando o `MockMvc`, além de testes locais de usabilidade.
+
+### 3.1. Testes de Integração com a UI e Renderização Condicional
+**Objetivo:** Garantir que o Thymeleaf processe os templates corretamente baseando-se nas regras de negócio e autorização, injetando alertas e desativando ações indesejadas.
+
+*   **Teste (Renderização Condicional de Componentes):**
+    *   **Ação:** Requisitar uma view logado como `ROLE_PROFESSOR` onde um elemento (ex: botão de gerenciar turmas) seja exclusivo para `ROLE_ADMINISTRADOR`.
+    *   **Verificação:** Validar via `MockMvc` através de XPath ou extração de conteúdo que a string HTML ou o identificador do botão NÃO está presente na resposta (`content().string(not(containsString("id=\"btn-gerenciar\""))`).
+
+*   **Teste (Feedback de Erro de Formulário - Fallback):**
+    *   **Ação:** Disparar um POST de formulário simulando falha de validação ou erro de negócio retornado pelo serviço.
+    *   **Verificação:** Confirmar o redirecionamento ou renderização com o modelo contendo a string de erro e garantir que a classe visual `.alert-danger` é renderizada no HTML final.
+
+*   **Teste (Empty States):**
+    *   **Ação:** Requisitar o painel administrativo quando o repositório retornar uma lista vazia.
+    *   **Verificação:** Validar que a tabela contém um texto ou classe específica de ausência de dados, garantindo que `colspan` está cobrindo a tabela e não há rendering indesejado da estrutura do laço (`th:each`).
+
+### 3.2. Validações Locais e Testes de Acessibilidade (a11y)
+Como as interações de script (como carregamento em formulários) e o DOM nativo ocorrem na janela do navegador, as validações visuais não-unitárias seguem o fluxo de auditoria de desenvolvimento:
+
+*   **Testes de Loading (Double Submit Prevention):** Execução do fluxo de ponta-a-ponta em ambiente local submetendo um formulário para garantir que o botão ganha o estado `disabled` e o `spinner-border` se torna visível imediatamente.
+*   **Acessibilidade e Navegação por Teclado:** Verificações obrigatórias utilizando a tecla `Tab` e atalhos de navegador para atestar o fluxo sequencial da UI.
+*   **Testes Responsivos:** Utilização do inspetor de elementos do navegador (DevTools) reduzindo a janela de exibição para tamanhos Mobile (`320px` a `768px`) certificando que as classes `.table-responsive` mitigam "quebras" horizontais (overflow) nas listagens.
